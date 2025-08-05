@@ -1,0 +1,31 @@
+{
+  "name": "Lead Response Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-inquiry"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook"
+    },
+    {
+      "parameters": {
+        "functionCode": "const inquiry = items[0].json;
+// Add AI intent detection logic here
+return [{ json: { message: `Thank you ${inquiry.name}, we will contact you shortly.` } }];"
+      },
+      "name": "AI Response Generator",
+      "type": "n8n-nodes-base.function"
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "https://api.whatsapp.com/send",
+        "options": {}
+      },
+      "name": "WhatsApp Notifier",
+      "type": "n8n-nodes-base.httpRequest"
+    }
+  ]
+}
